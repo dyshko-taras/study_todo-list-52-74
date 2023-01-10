@@ -1,16 +1,18 @@
 package com.dyshkotaras.todolist;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton buttonAddNote;
     private LinearLayout linearLayoutNotes;
-    private ArrayList<Note> notes = new ArrayList<>();
+    private final ArrayList<Note> notes = new ArrayList<>();
 
 
     @Override
@@ -33,7 +35,14 @@ public class MainActivity extends AppCompatActivity {
             notes.add(note);
 
         }
+        Log.d("TUUT","1");
         showNotes();
+        Log.d("TUUT","2");
+        buttonAddNote.setOnClickListener(view -> {
+            Log.d("TUUT","3");
+            Intent intent = AddNoteActivity.newIntent(MainActivity.this);
+            startActivity(intent);
+        });
     }
 
     private void initView() {
@@ -43,13 +52,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void showNotes() {
         for (Note note : notes) {
-            View view = getLayoutInflater().inflate(
-                    R.layout.note_item,
-                    linearLayoutNotes,
-                    false);
+            View view = getLayoutInflater().inflate(R.layout.note_item, linearLayoutNotes, false);
             TextView textViewNote = view.findViewById(R.id.textViewNote);
             textViewNote.setText(note.getText());
-
             int colorResId;
             switch (note.getPriority()) {
                 case 0:
@@ -61,11 +66,10 @@ public class MainActivity extends AppCompatActivity {
                 default:
                     colorResId = android.R.color.holo_red_light;
                     break;
+
             }
-            Log.d("int colorResId ---- ",String.valueOf(colorResId));
-            int color = ContextCompat.getColor(this,colorResId);
+            int color = ContextCompat.getColor(this, colorResId);
             textViewNote.setBackgroundColor(color);
-            Log.d("int color ---- ",String.valueOf(color));
             linearLayoutNotes.addView(view);
         }
     }

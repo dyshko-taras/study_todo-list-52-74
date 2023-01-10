@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">ToDo List</string>
+    <string name="enter_note">Enter note:</string>
+    <string name="low">LOW</string>
+    <string name="medium">MEDIUM</string>
+    <string name="high">HIGH</string>
+    <string name="save">SAVE</string>
+    <string name="help">HELP</string>
 </resources>

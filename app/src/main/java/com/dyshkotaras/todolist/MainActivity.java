@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -20,7 +21,7 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton buttonAddNote;
-    private LinearLayout linearLayoutNotes;
+    private RecyclerView recyclerViewNotes;
     private Database database = Database.getInstance();
 
 
@@ -43,7 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         buttonAddNote = findViewById(R.id.buttonAddNote);
-        linearLayoutNotes = findViewById(R.id.linerLayoutNotes);
+        recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
+        buttonAddNote
     }
 
     private void showNotes() {
@@ -74,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             int color = ContextCompat.getColor(this, colorResId);
             textViewNote.setBackgroundColor(color);
             linearLayoutNotes.addView(view);
+
         }
     }
 

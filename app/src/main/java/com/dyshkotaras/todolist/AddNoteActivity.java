@@ -24,16 +24,8 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         initView();
-        buttonSave.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                saveNote();
-            }
-        });
-
+        buttonSave.setOnClickListener(view -> saveNote());
     }
-
-
 
     private void initView() {
         editTextNote = findViewById(R.id.editTextNote);
@@ -49,7 +41,6 @@ public class AddNoteActivity extends AppCompatActivity {
         Note note = new Note(id, text, priority);
         database.add(note);
         finish();
-
     }
 
     private int getPriority() {

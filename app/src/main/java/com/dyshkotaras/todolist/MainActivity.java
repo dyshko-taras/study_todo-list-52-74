@@ -49,7 +49,13 @@ public class MainActivity extends AppCompatActivity {
     private void showNotes() {
         linearLayoutNotes.removeAllViews();
         for (Note note : database.getNotes()) {
-            View view = getLayoutInflater().inflate(R.layout.note_item, linearLayoutNotes, false);
+            View view = getLayoutInflater().inflate(R.layout.note_item,
+                    linearLayoutNotes,
+                    false);
+            view.setOnClickListener(view1 -> {
+                database.remove(note.getId());
+                showNotes();
+            });
             TextView textViewNote = view.findViewById(R.id.textViewNote);
             textViewNote.setText(note.getText());
             int colorResId;

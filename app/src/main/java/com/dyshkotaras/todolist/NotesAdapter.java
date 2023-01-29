@@ -1,6 +1,5 @@
 package com.dyshkotaras.todolist;
 
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +17,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
 
     public void setNotes(ArrayList<Note> notes) {
         this.notes = notes;
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public NotesViewHolder onCreateViewHolder (@NonNull ViewGroup parent, int viewType) {
+    public NotesViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.note_item,
                 parent,
@@ -30,25 +30,23 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return new NotesViewHolder(view);
     }
 
-
     @Override
-    public void onBindViewHolder (NotesViewHolder viewHolder, int position) {
+    public void onBindViewHolder(NotesViewHolder viewHolder, int position) {
         Note note = notes.get(position);
         viewHolder.textViewNote.setText(note.getText());
-        int colorResId;
+        int colorResid;
         switch (note.getPriority()) {
             case 0:
-                colorResId = android.R.color.holo_green_light;
+                colorResid = android.R.color.holo_green_light;
                 break;
             case 1:
-                colorResId = android.R.color.holo_orange_light;
+                colorResid = android.R.color.holo_orange_light;
                 break;
             default:
-                colorResId = android.R.color.holo_red_light;
+                colorResid = android.R.color.holo_red_light;
                 break;
-
         }
-        int color = ContextCompat.getColor(viewHolder.itemView.getContext(), colorResId);
+        int color = ContextCompat.getColor(viewHolder.itemView.getContext(),colorResid);
         viewHolder.textViewNote.setBackgroundColor(color);
     }
 
@@ -57,7 +55,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
         return notes.size();
     }
 
-    class NotesViewHolder extends RecyclerView.ViewHolder   {
+    class NotesViewHolder extends RecyclerView.ViewHolder {
         private TextView textViewNote;
 
         public NotesViewHolder(@NonNull View itemView) {
@@ -65,4 +63,5 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NotesViewHol
             textViewNote = itemView.findViewById(R.id.textViewNote);
         }
     }
+
 }

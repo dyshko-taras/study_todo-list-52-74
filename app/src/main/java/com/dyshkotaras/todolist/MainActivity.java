@@ -33,11 +33,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initView();
         notesAdapter = new NotesAdapter();
+        notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
+            @Override
+            public void onNoteClick(Note note) {
+                database.remove(note.getId());
+                showNotes();
+            }
+        });
         recyclerViewNotes.setAdapter(notesAdapter);
         buttonAddNote.setOnClickListener(view -> {
             Intent intent = AddNoteActivity.newIntent(MainActivity.this);
             startActivity(intent);
         });
+
     }
 
     @Override
@@ -55,6 +63,5 @@ public class MainActivity extends AppCompatActivity {
     private void showNotes() {
         notesAdapter.setNotes(database.getNotes());
     }
-
 }
 

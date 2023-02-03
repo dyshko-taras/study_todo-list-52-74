@@ -1,5 +1,6 @@
 package com.dyshkotaras.todolist;
 
+import android.app.Application;
 import android.content.ClipData;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,15 +25,18 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
 
     private FloatingActionButton buttonAddNote;
-    private final Database database = Database.getInstance();
     private RecyclerView recyclerViewNotes;
     private NotesAdapter notesAdapter;
+
+    private NoteDatabase noteDatabase;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        noteDatabase = NoteDatabase.getInstance(getApplication());
         initView();
         notesAdapter = new NotesAdapter();
         notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
@@ -55,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Note note = notesAdapter.getNotes().get(position);
-                database.remove(note.getId());
+                noteDatabase.notesDao().remove(note.getId());
                 showNotes();
             }
         });
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showNotes() {
-        notesAdapter.setNotes(database.getNotes());
+        notesAdapter.setNotes(noteDatabase.notesDao().getNotes());
     }
 }
 

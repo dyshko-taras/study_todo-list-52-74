@@ -16,7 +16,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private RadioButton radioButtonLow;
     private RadioButton radioButtonMedium;
     private Button buttonSave;
-    private Database database = Database.getInstance();
+    private NoteDatabase noteDatabase;
 
 
     @Override
@@ -24,6 +24,7 @@ public class AddNoteActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_note);
         initView();
+        noteDatabase = NoteDatabase.getInstance(getApplication());
         buttonSave.setOnClickListener(view -> saveNote());
     }
 
@@ -37,9 +38,8 @@ public class AddNoteActivity extends AppCompatActivity {
     private void saveNote() {
         String text = editTextNote.getText().toString().trim();
         int priority = getPriority();
-        int id = database.getNotes().size();
-        Note note = new Note(id, text, priority);
-        database.add(note);
+        Note note = new Note(text, priority);
+        noteDatabase.notesDao().add(note);
         finish();
     }
 

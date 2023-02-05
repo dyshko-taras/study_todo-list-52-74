@@ -3,7 +3,8 @@ package com.dyshkotaras.todolist;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -17,6 +18,7 @@ public class AddNoteActivity extends AppCompatActivity {
     private RadioButton radioButtonMedium;
     private Button buttonSave;
     private NoteDatabase noteDatabase;
+    private Handler handler = new Handler(Looper.getMainLooper());
 
 
     @Override
@@ -39,8 +41,19 @@ public class AddNoteActivity extends AppCompatActivity {
         String text = editTextNote.getText().toString().trim();
         int priority = getPriority();
         Note note = new Note(text, priority);
-        noteDatabase.notesDao().add(note);
-        finish();
+        Thread thread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                noteDatabase.notesDao().add(note);
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                    }
+                });
+            }
+        });
+        thread.start();
     }
 
     private int getPriority() {

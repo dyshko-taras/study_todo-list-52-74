@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,25 +21,25 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerViewNotes;
     private NotesAdapter notesAdapter;
 
-    private MainViewModel viewModel;
+    private MainViewModel mainViewModel;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        viewModel = new MainViewModel(getApplication());
+        mainViewModel = new MainViewModel(getApplication());
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         initView();
         notesAdapter = new NotesAdapter();
         notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
             @Override
             public void onNoteClick(Note note) {
-                Toast.makeText(getBaseContext(),note.getText(),Toast.LENGTH_LONG).show();
             }
         });
         recyclerViewNotes.setAdapter(notesAdapter);
 
-        viewModel.getNotes().observe(MainActivity.this, new Observer<List<Note>>() {
+        mainViewModel.getNotes().observe(MainActivity.this, new Observer<List<Note>>() {
             @Override
             public void onChanged(List<Note> notes) {
                 notesAdapter.setNotes(notes);
@@ -58,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
             public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
                 Note note = notesAdapter.getNotes().get(position);
-                viewModel.remove(note);
+                mainViewModel.remove(note);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerViewNotes);

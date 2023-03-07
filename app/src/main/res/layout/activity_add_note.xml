@@ -12,9 +12,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:autofillHints="@null"
+
         android:hint="@string/enter_note"
         android:inputType="textPersonName"
-        android:textColor="@color/black"
+        android:textColor="@android:color/holo_blue_dark"
         android:textSize="20sp"
         android:textStyle="italic|bold" />
 

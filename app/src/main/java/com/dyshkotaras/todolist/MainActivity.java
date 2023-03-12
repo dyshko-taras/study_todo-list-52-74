@@ -28,9 +28,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mainViewModel = new MainViewModel(getApplication());
-        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
         initView();
+        mainViewModel = new ViewModelProvider(this).get(MainViewModel.class);
+        mainViewModel.getNotes().observe(MainActivity.this, new Observer<List<Note>>() {
+            @Override
+            public void onChanged(List<Note> notes) {
+                notesAdapter.setNotes(notes);
+            }
+        });
+
+
         notesAdapter = new NotesAdapter();
         notesAdapter.setOnNoteClickListener(new NotesAdapter.OnNoteClickListener() {
             @Override
@@ -39,12 +46,6 @@ public class MainActivity extends AppCompatActivity {
         });
         recyclerViewNotes.setAdapter(notesAdapter);
 
-        mainViewModel.getNotes().observe(MainActivity.this, new Observer<List<Note>>() {
-            @Override
-            public void onChanged(List<Note> notes) {
-                notesAdapter.setNotes(notes);
-            }
-        });
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(
                 0,
                 ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
@@ -63,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerViewNotes);
+
         buttonAddNote.setOnClickListener(view -> {
             Intent intent = AddNoteActivity.newIntent(MainActivity.this);
             startActivity(intent);
@@ -72,8 +74,6 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
-
     }
-
 }
 

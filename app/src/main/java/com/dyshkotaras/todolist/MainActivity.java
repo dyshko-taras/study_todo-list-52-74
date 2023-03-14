@@ -71,11 +71,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mainViewModel.refreshList();
-    }
 
     private void initView() {
         buttonAddNote = findViewById(R.id.buttonAddNote);

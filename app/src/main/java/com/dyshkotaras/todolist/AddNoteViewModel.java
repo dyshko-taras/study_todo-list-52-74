@@ -17,11 +17,11 @@ import io.reactivex.rxjava3.core.Scheduler;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
+import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class AddNoteViewModel extends AndroidViewModel {
 
-    //    private NoteDatabase noteDatabase;
     private NotesDao notesDao;
     private MutableLiveData<Boolean> shouldCloseScreen = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
@@ -29,13 +29,12 @@ public class AddNoteViewModel extends AndroidViewModel {
 
     public AddNoteViewModel(@NonNull Application application) {
         super(application);
-//        noteDatabase = NoteDatabase.getInstance(application);
         notesDao = NoteDatabase.getInstance(application).notesDao();
     }
 
 
     public void saveNote(Note note) {
-        Disposable disposable = saveNoteRx(note)
+        Disposable disposable = notesDao.add(note)
 //                .delay(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -45,18 +44,14 @@ public class AddNoteViewModel extends AndroidViewModel {
                         Log.d("AddNoteViewModel", "subscribe");
                         shouldCloseScreen.setValue(true);
                     }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d("AddNoteViewModel", "Error saveNote");
+                    }
                 });
         compositeDisposable.add(disposable);
 
-    }
-
-    private Completable saveNoteRx(Note note) {
-        return Completable.fromAction(new Action() {
-            @Override
-            public void run() throws Throwable {
-                notesDao.add(note);
-            }
-        });
     }
 
     public LiveData<Boolean> getShouldCloseScreen() {

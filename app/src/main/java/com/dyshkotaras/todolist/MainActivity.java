@@ -1,9 +1,8 @@
 package com.dyshkotaras.todolist;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -69,12 +68,18 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = AddNoteActivity.newIntent(MainActivity.this);
             startActivity(intent);
         });
+
     }
 
 
     private void initView() {
         buttonAddNote = findViewById(R.id.buttonAddNote);
         recyclerViewNotes = findViewById(R.id.recyclerViewNotes);
+    }
+
+    public static Intent newIntent(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        return intent;
     }
 }
 

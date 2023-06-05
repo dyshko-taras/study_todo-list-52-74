@@ -1,4 +1,4 @@
-package com.dyshkotaras.todolist;
+package com.dyshkotaras.todolist.main_app;
 
 import androidx.room.Entity;
 import androidx.room.Ignore;

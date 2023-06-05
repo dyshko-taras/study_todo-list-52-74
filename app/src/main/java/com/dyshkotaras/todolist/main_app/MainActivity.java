@@ -1,4 +1,4 @@
-package com.dyshkotaras.todolist;
+package com.dyshkotaras.todolist.main_app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.dyshkotaras.todolist.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;

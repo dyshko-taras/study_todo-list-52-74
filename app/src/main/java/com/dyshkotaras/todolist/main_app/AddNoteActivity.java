@@ -1,4 +1,4 @@
-package com.dyshkotaras.todolist;
+package com.dyshkotaras.todolist.main_app;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import java.util.List;
+import com.dyshkotaras.todolist.R;
 
 public class AddNoteActivity extends AppCompatActivity {
 

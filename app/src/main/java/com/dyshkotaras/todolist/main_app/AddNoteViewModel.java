@@ -1,4 +1,4 @@
-package com.dyshkotaras.todolist;
+package com.dyshkotaras.todolist.main_app;
 
 import android.app.Application;
 import android.util.Log;
@@ -8,49 +8,49 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.core.Completable;
-import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
-public class MainViewModel extends AndroidViewModel {
+public class AddNoteViewModel extends AndroidViewModel {
 
-    private NoteDatabase noteDatabase;
+    private NotesDao notesDao;
+    private MutableLiveData<Boolean> shouldCloseScreen = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
 
-    public MainViewModel(@NonNull Application application) {
+    public AddNoteViewModel(@NonNull Application application) {
         super(application);
-        noteDatabase = NoteDatabase.getInstance(application);
+        notesDao = NoteDatabase.getInstance(application).notesDao();
     }
 
-    public void remove(Note note) {
-        Disposable disposable = noteDatabase.notesDao().remove(note.getId())
+
+    public void saveNote(Note note) {
+        Disposable disposable = notesDao.add(note)
+//                .delay(5, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action() {
                     @Override
                     public void run() throws Throwable {
-                        Log.d("MainViewModel", "remove");
+                        Log.d("AddNoteViewModel", "subscribe");
+                        shouldCloseScreen.setValue(true);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
-                        Log.d("MainViewModel", "Error remove");
+                        Log.d("AddNoteViewModel", "Error saveNote");
                     }
                 });
         compositeDisposable.add(disposable);
+
     }
 
-    public LiveData<List<Note>> getNotes() {
-        return noteDatabase.notesDao().getNotes();
+    public LiveData<Boolean> getShouldCloseScreen() {
+        return shouldCloseScreen;
     }
 
     @Override
